@@ -4,7 +4,7 @@ import CbusFlimNode
 import cbus2515
 from merg_widgets import MergInput, MergLed
 
-class can_picoX(CbusFlimNode.CbusNode):
+class can_pico(CbusFlimNode.CbusNode):
     def __init__(self, config):
         CbusFlimNode.CbusNode.__init__(self, config)
         self.button = MergInput(21, self.button_on, self.button_off)

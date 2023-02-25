@@ -1,4 +1,4 @@
-from lib.pico02 import can_picoX
+from lib.pico02 import can_pico
 # import json
 import time
 # from machine import Pin
@@ -23,46 +23,27 @@ config = {
 }
 
 
-class Test(can_picoX):
+class Test(can_pico):
     def __init__(self):
-        can_picoX.__init__(self, config)
+        can_pico.__init__(self, config)
         self.debug = False
-        self.button = MergInput(21, self.button_on, self.button_off)
-        self.green_led = MergLed(1)
-        self.green_led.on = False
-        self.amber_led = MergLed(0)
-        self.amber_led.on = True
-        self.amber_led.flash = True
-        self.amber_led.level = 10
-        self.amber_led.flash_frequency = 10
-        self.red_led = MergLed(2)
-        
-    def button_on(self):
-        self.acon(2)
-        self.green_led.on = True
-        self.red_led.flash = True
-        self.red_led.flash_duration = 1000
-        self.amber_led.level = 10
-        
-    def button_off(self):
-        self.asof(2)
-        self.green_led.on = False
-        self.red_led.flash = False
-        self.amber_led.level = 5
+        self.actions['E1'] = self.session_info # Add E1 opcode
 
     def my_function(self, event):
         print('my_function ' + str(self.data['variables']) + ' : ' + str(event))
         # print('Event Variable 1 : '+str(event['variables'][1]))
-        if event['variables'][1] == 1:
-            print('Event Variable set to 1')
-            if event['task'] == 'on':
-                self.red_led.flash_frequency = 1
-                self.red_led.flash = True
-                self.red_led.flash_duration = event['variables'][2] * 10
-                self.red_led.on = True
-            else:
-                self.red_led.flash = False
-                self.red_led.on = False
+        
+    def rloc(self, loco_id):
+        output = self.get_header() + "40" + self.pad(loco_id, 4) + ";"
+        self.send(output)
+
+    def stmod(self, session_id, speed):
+        output = self.get_header() + "47" + self.pad(session_id, 2) + self.pad(spee2, 4) + ";"
+        self.send(output)
+        
+    def session_info(self, msg):  # i.e. session requested from CANCMD.
+        # CbusFlimNode does not take account of long/short address variations.
+        self.my_function({'task': 'dcc', 'variables':{'session': self.get_str(msg, 9, 2), 'loco_id': self.get_str(msg, 11, 4)}}) 
         
     def run(self):
         print("TestPico02 RUN")
