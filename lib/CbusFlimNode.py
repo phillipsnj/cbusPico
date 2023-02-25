@@ -250,7 +250,8 @@ class CbusNode:
                 is received. Can be String, number, list etc
         """
         new_id = self.pad(node_id, 4) + self.pad(event_id, 4)
-        self.events[new_id] = variables
+        # self.events[new_id] = variables
+        self.data['events'][new_id.upper()] = variables
         if self.debug:
             print(self.events)
 
@@ -262,7 +263,8 @@ class CbusNode:
                is received. Can be String, number, list etc
         """
         new_id = self.pad(0, 4) + self.pad(event_id, 4)
-        self.events[new_id] = variables
+        # self.events[new_id] = variables
+        self.data['events'][new_id.upper()] = variables
         if self.debug:
             print(json.dumps(self.events, indent=4))
 
