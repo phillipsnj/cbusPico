@@ -4,17 +4,18 @@ import CbusFlimNode
 import cbus2515
 from merg_widgets import MergInput, MergLed
 
+
 class can_pico(CbusFlimNode.CbusNode):
     def __init__(self, config):
         CbusFlimNode.CbusNode.__init__(self, config)
-        self.button = MergInput(21, self.button_on, self.button_off)
-        self.green_led = MergLed(1)
+        self.button = MergInput(22, self.button_on, self.button_off)
+        self.green_led = MergLed(9)
         self.green_led.on = False
-        self.amber_led = MergLed(0)
+        self.amber_led = MergLed(15)
         self.amber_led.on = True
-        self.red_led = MergLed(2)
+        self.red_led = MergLed(8)
         self.red_led.on = False
-        self.debug = False
+        self.debug = True
         self.interface = 1  # 1 can, 2 ethernet
         
         # Setup the CAN Bus

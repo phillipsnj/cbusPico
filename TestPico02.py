@@ -17,8 +17,8 @@ config = {
     "flim": True,
     "bootloader": False,
     "consume_own_events": False,
-    "node_variables": 2,
-    "event_variables": 3,
+    "node_variables": 8,
+    "event_variables": 8,
     "data_file": "TestCanPico.json"
 }
 
@@ -26,7 +26,7 @@ config = {
 class Test(can_pico):
     def __init__(self):
         can_pico.__init__(self, config)
-        self.debug = False
+        self.debug = True
         self.actions['E1'] = self.session_info # Add E1 opcode
 
     def my_function(self, event):
